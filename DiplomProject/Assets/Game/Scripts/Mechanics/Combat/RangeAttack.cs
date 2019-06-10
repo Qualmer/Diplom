@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesController : MonoBehaviour
+public abstract class RangeAttack : Attack
 {
-    // Start is called before the first frame update
+	public Projectile projectile;
+
+
+	protected virtual void Awake()
+	{
+		
+	}
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

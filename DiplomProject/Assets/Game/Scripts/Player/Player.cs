@@ -2,31 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Unit
 {
 	public float Speed;
-	private Rigidbody2D rb;
 
 	private Vector2 velocity;
-	void Start()
-	{
-		rb = GetComponent<Rigidbody2D>();
-	}
 
-	void Update()
-	{
-		UpdatePosition();
-		UpdateRotation();
-	}
-
-	void UpdatePosition()
+	protected override void UpdatePosition()
 	{
 		var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		velocity = input.normalized * Speed;
 		rb.MovePosition(rb.position + velocity * Time.deltaTime);
 	}
 
-	void UpdateRotation()
+	protected override void UpdateRotation()
 	{
 		var mousePos = Input.mousePosition;
 		var mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);

@@ -1,32 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Attack : MonoBehaviour
+public abstract class Attack : Spell
 {
-    GameObject xyz_range;
-    public int damage ;
-    public int wpn_damage;
-    public int armor;
-    // Use this for initialization
-    public GameObject hpbarTriger;
-    public GameObject plr;
-
-    private void OnTriggerStay(Collider col)
-    {
-
-        switch (col.tag)
-        {
-            case "Enemy_xyz":
-                break;
-        }
-
-
-    }
-    // Update is called once per frame
-    void Update ()
-    {
-
-		
-	}
+	public Damage Damage;
+	public event Action<Damage> OnTargetHited;
+	protected Action<Collider2D> attackHandler;
+	protected List<string> TargetTags = new List<string>() {
+		"Enemy"
+	};
 }
