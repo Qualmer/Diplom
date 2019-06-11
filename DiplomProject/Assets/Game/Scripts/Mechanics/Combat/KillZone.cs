@@ -9,6 +9,7 @@ public class KillZone : MonoBehaviour
 	public List<string> TargetTags = new List<string>();
 	public Action<Collider2D> CollisionHandler;
 	public bool IsActive;
+	private List<Collider2D> targets = new List<Collider2D>();
 
 	public void SetValues(List<string> targetTags, Action<Collider2D> collisionHandler)
 	{
@@ -16,22 +17,26 @@ public class KillZone : MonoBehaviour
 		this.CollisionHandler = collisionHandler;
 	}
 
-	public void Activate(float delay)
+	private void Start()
 	{
-		StartCoroutine(WaitForDelayAndDeactivateTask(delay));
 	}
 
-	protected void OnTriggerStay2D(Collider2D collision)
+	public void Activate()
 	{
-		if (IsActive && TargetTags.Contains(collision.name)) {
-			CollisionHandler.Invoke(collision);
+		foreach (var target in targets) {
+			if (TargetTags.Contains(target.tag)) {
+				CollisionHandler.Invoke(target);
+			}
 		}
 	}
 
-	private IEnumerator<object> WaitForDelayAndDeactivateTask(float delay)
+	protected void OnTriggerEnter2D(Collider2D collision)
 	{
-		IsActive = true;
-		yield return delay;
-		IsActive = false;
+		targets.Add(collision);
+	}
+
+	protected void OnTriggerExit2D(Collider2D collision)
+	{
+		targets.Remove(collision);
 	}
 }

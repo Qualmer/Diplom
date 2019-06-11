@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Enemy : Unit
 {
-    void Start()
-    {
-        
-    }
-
-    void Update()
+	protected override void UpdatePosition()
+	{
+		//rb.MovePosition(rb.position + Vector2.zero * Time.deltaTime);
+	}
+	void Start()
     {
         
     }

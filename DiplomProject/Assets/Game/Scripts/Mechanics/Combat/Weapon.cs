@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : Item
+public class Weapon : MonoBehaviour
 {
 	public Attack Attack1;
 	public Attack Attack2;

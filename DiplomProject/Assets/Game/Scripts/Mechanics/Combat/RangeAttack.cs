@@ -17,8 +17,4 @@ public abstract class RangeAttack : Attack
         
     }
 
-    void Update()
-    {
-        
-    }
 }

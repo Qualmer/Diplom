@@ -6,22 +6,14 @@ using UnityEngine;
 public abstract class Shell : MonoBehaviour
 {
 	public float BaseSpeed = 1;
-	public List<float> SpeedModificators = new List<float>();
-	public float CurrentSpeed
-	{
-		get {
-			var value = BaseSpeed;
-			foreach (var mod in SpeedModificators) {
-				value += mod;
-			}
-			return Mathf.Clamp(value, 0, 100);
-		}
-	}
+	[HideInInspector]
+	public float CurrentSpeed;
 
 	protected Rigidbody2D rb;
 
-	protected void Awake()
+	protected virtual void Awake()
 	{
+		CurrentSpeed = BaseSpeed;
 		rb = GetComponent<Rigidbody2D>();
 	}
 

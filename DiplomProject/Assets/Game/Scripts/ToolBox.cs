@@ -1,22 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public static class ToolBox
 {
-	public static float CalculateModificatedValue(float value, List<float> modificators)
+	public static List<T> ListOfEnum<T>()
 	{
-		foreach (var mod in modificators) {
-			value += mod;
+		if (!typeof(T).IsEnum) {
+			throw new Exception($"{typeof(T).Name} ето вам не ето");
 		}
-		return value;
-	}
 
-	public static int CalculateModificatedValue(int value, List<int> modificators)
-	{
-		foreach (var mod in modificators) {
-			value += mod;
-		}
-		return value;
+		return new List<T>((T[])Enum.GetValues(typeof(T)));
 	}
 }

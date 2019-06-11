@@ -5,8 +5,16 @@ using UnityEngine;
 public class Player : Unit
 {
 	public float Speed;
-
+	public Weapon Weapon;
 	private Vector2 velocity;
+
+	protected override void Update()
+	{
+		if (Input.GetKey(KeyCode.Mouse0)) {
+			Weapon.Attack1?.Cast();
+		}
+		
+	}
 
 	protected override void UpdatePosition()
 	{

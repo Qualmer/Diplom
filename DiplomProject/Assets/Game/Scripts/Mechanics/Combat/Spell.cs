@@ -1,34 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public abstract class Spell : MonoBehaviour
 {
-	public int BaseManaCost;
-	public List<int> ManaCostModificators;
-	public float BaseCooldown;
-	public List<int> CooldownModificators;
+	public class Effect
+	{
+		public Effect(Action<float> action, float duration)
+		{
+			this.action = action;
+			this.duration = duration;
+		}
 
-	public int Manacost
-	{
-		get {
-			var value = BaseManaCost;
-			foreach (var mod in ManaCostModificators) {
-				value += mod;
-			}
-			return value;
-		}
-	}
-	public float Cooldown
-	{
-		get {
-			var value = BaseCooldown;
-			foreach (var mod in CooldownModificators) {
-				value += mod;
-			}
-			return value;
-		}
+		public Action<float> action;
+		public float duration;
 	}
 
-	public abstract void Cast();
+	public int ManaCost;
+	public float Cooldown;
+	private float currentCooldown;
+	protected Dictionary<TargetField, Effect> Effects = new Dictionary<TargetField, Effect>();
+
+	public virtual bool Cast()
+	{
+		if (currentCooldown > 0) {
+			return false;
+		}
+		Debug.Log("Костанул ежжи");
+		currentCooldown = Cooldown;
+		return true;
+
+	}
+
+	protected virtual void Update()
+	{
+		if (currentCooldown > 0) {
+			currentCooldown -= Time.deltaTime;
+		}
+	}
 }
