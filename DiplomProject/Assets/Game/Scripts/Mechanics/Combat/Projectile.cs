@@ -30,9 +30,4 @@ public abstract class Projectile : Shell
 			CollisionHandler.Invoke(collision);
 		}
 	}
-
-	void Start()
-    {
-        
-    }
 }

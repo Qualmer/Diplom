@@ -27,7 +27,6 @@ public abstract class Spell : MonoBehaviour
 		if (currentCooldown > 0) {
 			return false;
 		}
-		Debug.Log("Костанул ежжи");
 		currentCooldown = Cooldown;
 		return true;
 

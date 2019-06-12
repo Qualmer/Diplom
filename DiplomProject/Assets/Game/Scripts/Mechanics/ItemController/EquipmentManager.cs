@@ -33,7 +33,6 @@ public class EquipmentManager : MonoBehaviour {
 
 	public SkinnedMeshRenderer targetMesh;
 
-	// Callback for when an item is equipped
 	public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem);
 	public event OnEquipmentChanged onEquipmentChanged;
 

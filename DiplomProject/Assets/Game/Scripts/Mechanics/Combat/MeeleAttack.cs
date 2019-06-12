@@ -21,7 +21,7 @@ public class MeeleAttack : Attack
 			TargetField.DealPhysicalDamage,
 			new Effect(
 				(value) => {
-					Debug.Log("Наносим 5 урончику");
+					Debug.Log("Наносим урончик");
 					value -= 5;
 				},
 			0
