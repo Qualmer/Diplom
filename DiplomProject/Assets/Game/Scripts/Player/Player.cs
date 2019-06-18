@@ -34,7 +34,7 @@ public class Player : Unit
 	protected void Update()
 	{
 		if (Input.GetKey(KeyCode.Mouse0)) {
-		((AreaSpell)	currentWeaponAttack.GetComponent<Spell>()).Cast();
+			currentWeaponAttack.GetComponent<Spell>().Cast();
 		}
 	}
 
