@@ -44,9 +44,8 @@ public class Unit : Shell
 	#endregion //Armor
 
 	public List<Spell> Spells;
-
-	protected Dictionary<TargetField, List<Spell.Effect>> activeEffects =
-		new Dictionary<TargetField, List<Spell.Effect>>();
+	protected List<Effect> activeEffects =
+		new List<Effect>();
 
 	protected override void Awake()
 	{
@@ -55,9 +54,6 @@ public class Unit : Shell
 		CurrentMana = MaxMana;
 		CurrentPhysicalArmor = BasePhysicalArmor;
 		CurrentMagicalArmor = BaseMagicalArmor;
-		foreach (var targetField in ToolBox.ListOfEnum<TargetField>()) {
-			activeEffects.Add(targetField, new List<Spell.Effect>());
-		}
 	}
 
 	protected int ReduceDamage(int physical, int magical)
@@ -68,95 +64,63 @@ public class Unit : Shell
 		return physical + magical;
 	}
 
-	protected virtual void Update()
+	public virtual void AddEffects(List<Effect> effects)
 	{
-		foreach (var effectGroup in activeEffects) {
-			switch (effectGroup.Key) {
-				case TargetField.DealPhysicalDamage:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(SetHPPhysical);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.DealMagicalDamage:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(SetHPMagical);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.Heal:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(CurrentHealth);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.Mana:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(CurrentMana);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.PhysicalArmor:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(CurrentPhysicalArmor);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.MagicalArmor:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(CurrentMagicalArmor);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				case TargetField.MoveSpeed:
-					foreach (var effect in effectGroup.Value) {
-						effect.action.Invoke(CurrentSpeed);
-						effect.duration -= Time.deltaTime;
-						if (effect.duration <= 0) {
-							effectGroup.Value.Remove(effect);
-						}
-					}
-					break;
-				default:
-					throw new Exception($"Не туда");
+		foreach (var effect in effects) {
+			StartCoroutine(HandleEffectTask(effect));
+		}
+	}
+
+	protected IEnumerator<object> HandleEffectTask(Effect effect)
+	{
+		activeEffects.Add(effect);
+		System.Action action;
+		switch (effect.TargetField) {
+			case TargetField.DealPhysicalDamage:
+				action = () => {
+					effect.Activate(SetHPPhysical);
+				};
+				break;
+			case TargetField.DealMagicalDamage:
+				action = () => {
+					effect.Activate(SetHPMagical);
+				};
+				break;
+			case TargetField.Heal:
+				action = () => {
+					effect.Activate(CurrentHealth);
+				};
+				break;
+			case TargetField.Mana:
+				action = () => {
+					effect.Activate(CurrentMana);
+				};
+				break;
+			case TargetField.PhysicalArmor:
+				action = () => {
+					effect.Activate(CurrentPhysicalArmor);
+				};
+				break;
+			case TargetField.MagicalArmor:
+				action = () => {
+					effect.Activate(CurrentMagicalArmor);
+				};
+				break;
+			case TargetField.MoveSpeed:
+				action = () => {
+					effect.Activate(CurrentSpeed);
+				};
+				break;
+			default:
+				throw new Exception($"Не туда");
+		}
+		while (true) {
+			yield return effect.Periodicity;
+			effect.TicksCount --;
+			if (effect.TicksCount == 0) {
+				activeEffects.Remove(effect);
+				yield break;
 			}
 		}
 	}
-
-	public virtual void AddEffects(Dictionary<TargetField, Spell.Effect> effects)
-	{
-		foreach (var effect in effects) {
-			activeEffects[effect.Key].Add(effect.Value);
-			
-		}
-	}
-}
-
-public enum TargetField
-{
-	DealPhysicalDamage,
-	DealMagicalDamage,
-	Heal,
-	Mana,
-	PhysicalArmor,
-	MagicalArmor,
-	MoveSpeed
 }

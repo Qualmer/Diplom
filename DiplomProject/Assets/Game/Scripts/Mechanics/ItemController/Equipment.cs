@@ -1,12 +1,11 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Equipment")]
-public abstract class Equipment : Item {
+public class Equipment : Item {
 
 	public EquipmentSlot equipSlot;
-	public int armorModifier;
-	public int damageModifier;
-	public SkinnedMeshRenderer prefab;
+	public List<Effect> Effects;
 
 	public override void Use ()
 	{
@@ -17,8 +16,6 @@ public abstract class Equipment : Item {
 }
 
 public enum EquipmentSlot {
-	Head,
-	Chest,
-	Legs,
-	Feet
+	Weapon,
+	Armor
 }

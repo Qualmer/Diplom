@@ -12,6 +12,7 @@ public abstract class ItemToPickUp : Interactable
 
 	public virtual void PickUp()
 	{
-		Debug.Log($"Picked Up {gameObject.name}");
+		Debug.Log($"Подмаем {gameObject.name}");
+		bool wasPickedUp = Inventory.instance.Add(Item);
 	}
 }

@@ -29,9 +29,7 @@ public class EquipmentManager : MonoBehaviour {
 	public Equipment[] defaultWear;
 
 	Equipment[] currentEquipment;
-	SkinnedMeshRenderer[] currentMeshes;
 
-	public SkinnedMeshRenderer targetMesh;
 
 	public delegate void OnEquipmentChanged(Equipment newItem, Equipment oldItem);
 	public event OnEquipmentChanged onEquipmentChanged;
@@ -44,7 +42,6 @@ public class EquipmentManager : MonoBehaviour {
 
 		int numSlots = System.Enum.GetNames (typeof(EquipmentSlot)).Length;
 		currentEquipment = new Equipment[numSlots];
-		currentMeshes = new SkinnedMeshRenderer[numSlots];
 
 		EquipAllDefault ();
 	}
@@ -60,17 +57,12 @@ public class EquipmentManager : MonoBehaviour {
 		return currentEquipment [(int)slot];
 	}
 
-	// Equip a new item
 	public void Equip (Equipment newItem)
 	{
 		Equipment oldItem = null;
 
-		// Find out what slot the item fits in
-		// and put it there.
 		int slotIndex = (int)newItem.equipSlot;
 
-		// If there was already an item in the slot
-		// make sure to put it back in the inventory
 		if (currentEquipment[slotIndex] != null)
 		{
 			oldItem = currentEquipment [slotIndex];
@@ -79,17 +71,11 @@ public class EquipmentManager : MonoBehaviour {
 	
 		}
 
-		// An item has been equipped so we trigger the callback
 		if (onEquipmentChanged != null)
 			onEquipmentChanged.Invoke(newItem, oldItem);
 
 		currentEquipment [slotIndex] = newItem;
 		Debug.Log(newItem.name + " equipped!");
-
-		if (newItem.prefab) {
-			AttachToMesh (newItem.prefab, slotIndex);
-		}
-		//equippedItems [itemIndex] = newMesh.gameObject;
 
 	}
 
@@ -100,12 +86,7 @@ public class EquipmentManager : MonoBehaviour {
 			inventory.Add(oldItem);
 				
 			currentEquipment [slotIndex] = null;
-			if (currentMeshes [slotIndex] != null) {
-				Destroy (currentMeshes [slotIndex].gameObject);
-			}
 
-
-			// Equipment has been removed so we trigger the callback
 			if (onEquipmentChanged != null)
 				onEquipmentChanged.Invoke(null, oldItem);
 			
@@ -126,17 +107,4 @@ public class EquipmentManager : MonoBehaviour {
 			Equip (e);
 		}
 	}
-
-	void AttachToMesh(SkinnedMeshRenderer mesh, int slotIndex) {
-
-		if (currentMeshes [slotIndex] != null) {
-			Destroy (currentMeshes [slotIndex].gameObject);
-		}
-
-		SkinnedMeshRenderer newMesh = Instantiate(mesh) as SkinnedMeshRenderer;
-		newMesh.bones = targetMesh.bones;
-		newMesh.rootBone = targetMesh.rootBone;
-		currentMeshes [slotIndex] = newMesh;
-	}
-
 }

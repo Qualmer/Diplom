@@ -17,7 +17,7 @@ public abstract class Shell : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-	protected void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
 		UpdatePosition();
 		UpdateRotation();

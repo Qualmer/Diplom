@@ -43,3 +43,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Triggers
+    uniqueID: 2826298781
+    locked: 0

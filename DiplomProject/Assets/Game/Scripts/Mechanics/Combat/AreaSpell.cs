@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+[RequireComponent(typeof(Collider2D))]
+public class AreaSpell : Spell
+{
+	private List<Collider2D> targets = new List<Collider2D>();
+
+	public override bool Cast()
+	{
+		if (base.Cast()) {
+			foreach (var target in targets) {
+				if (TargetTags.Contains(target.tag)) {
+					target.GetComponent<Unit>().AddEffects(Effects);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	protected void OnTriggerEnter2D(Collider2D collision)
+	{
+		targets.Add(collision);
+	}
+
+	protected void OnTriggerExit2D(Collider2D collision)
+	{
+		targets.Remove(collision);
+	}
+}

@@ -2,25 +2,16 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 public abstract class Spell : MonoBehaviour
 {
-	public class Effect
-	{
-		public Effect(Action<float> action, float duration)
-		{
-			this.action = action;
-			this.duration = duration;
-		}
-
-		public Action<float> action;
-		public float duration;
-	}
-
 	public int ManaCost;
 	public float Cooldown;
-	private float currentCooldown;
-	protected Dictionary<TargetField, Effect> Effects = new Dictionary<TargetField, Effect>();
+	public float currentCooldown = 0;
+	public Spell SubSpell;
+	public List<Effect> Effects = new List<Effect>();
+	public List<string> TargetTags = new List<string>();
 
 	public virtual bool Cast()
 	{
@@ -29,7 +20,6 @@ public abstract class Spell : MonoBehaviour
 		}
 		currentCooldown = Cooldown;
 		return true;
-
 	}
 
 	protected virtual void Update()
