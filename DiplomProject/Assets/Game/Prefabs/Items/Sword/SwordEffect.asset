@@ -16,6 +16,7 @@ MonoBehaviour:
   TargetField: 0
   ValueDelta: 10
   ValueDeltaDeltaPerTick: 0
-  TicksCount: 1
+  BaseTicksCount: 1
+  CurrentTicksCount: 1
   Periodicity: 0
   PeriodicityDeltaPerTick: 0

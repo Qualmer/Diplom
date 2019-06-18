@@ -15,7 +15,8 @@ public class Unit : Shell
 			return CurrentHealth;
 		}
 		set {
-			CurrentHealth -= ReduceDamage(value, 0);
+			CurrentHealth -= ReduceDamage(CurrentHealth - value, 0);
+			Debug.Log($"Текущее здоровье: {CurrentHealth}");
 		}
 	}
 	int SetHPMagical {
@@ -23,7 +24,8 @@ public class Unit : Shell
 			return CurrentHealth;
 		}
 		set {
-			CurrentHealth -= ReduceDamage(0, value);
+			CurrentHealth -= ReduceDamage(0,CurrentHealth - value);
+			Debug.Log($"Текущее здоровье: {CurrentHealth}");
 		}
 	}
 	#endregion
@@ -78,46 +80,48 @@ public class Unit : Shell
 		switch (effect.TargetField) {
 			case TargetField.DealPhysicalDamage:
 				action = () => {
-					effect.Activate(SetHPPhysical);
+					SetHPPhysical = (int)effect.Activate(SetHPPhysical);
 				};
 				break;
 			case TargetField.DealMagicalDamage:
 				action = () => {
-					effect.Activate(SetHPMagical);
+					SetHPMagical = (int)effect.Activate(SetHPMagical);
 				};
 				break;
 			case TargetField.Heal:
 				action = () => {
-					effect.Activate(CurrentHealth);
+					CurrentHealth = (int)effect.Activate(CurrentHealth);
 				};
 				break;
 			case TargetField.Mana:
 				action = () => {
-					effect.Activate(CurrentMana);
+					CurrentMana = (int)effect.Activate(CurrentMana);
 				};
 				break;
 			case TargetField.PhysicalArmor:
 				action = () => {
-					effect.Activate(CurrentPhysicalArmor);
+					CurrentPhysicalArmor = (int)effect.Activate(CurrentPhysicalArmor);
 				};
 				break;
 			case TargetField.MagicalArmor:
 				action = () => {
-					effect.Activate(CurrentMagicalArmor);
+					CurrentMagicalArmor = (int)effect.Activate(CurrentMagicalArmor);
 				};
 				break;
 			case TargetField.MoveSpeed:
 				action = () => {
-					effect.Activate(CurrentSpeed);
+					CurrentSpeed = effect.Activate(CurrentSpeed);
 				};
 				break;
 			default:
 				throw new Exception($"Не туда");
 		}
 		while (true) {
+			action.Invoke();
 			yield return effect.Periodicity;
-			effect.TicksCount --;
-			if (effect.TicksCount == 0) {
+			effect.CurrentTicksCount --;
+			if (effect.CurrentTicksCount == 0) {
+				effect.CurrentTicksCount = effect.BaseTicksCount;
 				activeEffects.Remove(effect);
 				yield break;
 			}

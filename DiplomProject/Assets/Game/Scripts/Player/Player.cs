@@ -8,7 +8,9 @@ public class Player : Unit
 	private Vector2 velocity;
 	private SpriteRenderer spriteRenderer;
 	public EquipmentManager EquipmentManager;
+	GameObject weaponAttackPrefab;
 	GameObject currentWeaponAttack;
+	Spell attack;
 
 	protected void Start()
 	{
@@ -16,8 +18,9 @@ public class Player : Unit
 		EquipmentManager.instance.onEquipmentChanged += Instance_onEquipmentChanged;
 		spriteRenderer.sprite = EquipmentManager.instance.GetEquipment(EquipmentSlot.Weapon).sprite;
 		Weapon = (Weapon)EquipmentManager.instance.GetEquipment(EquipmentSlot.Weapon);
-		currentWeaponAttack = Weapon.Attack;
-		Instantiate(currentWeaponAttack, transform);
+		weaponAttackPrefab = Weapon.Attack;
+		currentWeaponAttack = Instantiate(weaponAttackPrefab, transform);
+		attack = currentWeaponAttack.GetComponent<Spell>();
 	}
 
 	private void Instance_onEquipmentChanged(Equipment newItem, Equipment oldItem)
@@ -25,16 +28,17 @@ public class Player : Unit
 		if (newItem.equipSlot == EquipmentSlot.Weapon) {
 			Destroy(currentWeaponAttack);
 			Weapon = (Weapon)newItem;
-			currentWeaponAttack = Weapon.Attack;
-			Instantiate(currentWeaponAttack, transform);
+			weaponAttackPrefab = Weapon.Attack;
+			currentWeaponAttack = Instantiate(weaponAttackPrefab, transform);
 			spriteRenderer.sprite = newItem.sprite;
+			attack = currentWeaponAttack.GetComponent<Spell>();
 		}
 	}
 
 	protected void Update()
 	{
-		if (Input.GetKey(KeyCode.Mouse0)) {
-			currentWeaponAttack.GetComponent<Spell>().Cast();
+		if (Input.GetKeyDown(KeyCode.Mouse0)) {
+			attack.Cast();
 		}
 	}
 
