@@ -25,7 +25,7 @@ public abstract class Shell : MonoBehaviour
 
 	protected virtual void UpdatePosition()
 	{
-		var velocity = Vector2.up * CurrentSpeed;
+		var velocity = (Vector2)transform.up * CurrentSpeed;
 		rb.MovePosition(rb.position + velocity * Time.deltaTime);
 	}
 

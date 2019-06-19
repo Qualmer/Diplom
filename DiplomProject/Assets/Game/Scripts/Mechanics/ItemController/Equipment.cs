@@ -10,6 +10,7 @@ public class Equipment : Item {
 	public override void Use ()
 	{
 		EquipmentManager.instance.Equip(this);
+		FindObjectOfType<Player>().AddEffects(Effects);
 		RemoveFromInventory();
 	}
 

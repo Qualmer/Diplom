@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class ItemToPickUp : Interactable
+public class ItemToPickUp : Interactable
 {
 	public Item Item;
 
@@ -14,5 +14,8 @@ public abstract class ItemToPickUp : Interactable
 	{
 		Debug.Log($"Подмаем {gameObject.name}");
 		bool wasPickedUp = Inventory.instance.Add(Item);
+		if (wasPickedUp) {
+			Destroy(gameObject);
+		}
 	}
 }

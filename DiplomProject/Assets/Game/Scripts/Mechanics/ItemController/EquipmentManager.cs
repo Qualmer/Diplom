@@ -70,11 +70,12 @@ public class EquipmentManager : MonoBehaviour {
 			inventory.Add (oldItem);
 	
 		}
+		currentEquipment[slotIndex] = newItem;
 
 		if (onEquipmentChanged != null)
 			onEquipmentChanged.Invoke(newItem, oldItem);
 
-		currentEquipment [slotIndex] = newItem;
+		
 		Debug.Log(newItem.name + " equipped!");
 
 	}
@@ -85,10 +86,10 @@ public class EquipmentManager : MonoBehaviour {
 			Equipment oldItem = currentEquipment [slotIndex];
 			inventory.Add(oldItem);
 				
-			currentEquipment [slotIndex] = null;
+			currentEquipment [slotIndex] = defaultWear[slotIndex];
 
 			if (onEquipmentChanged != null)
-				onEquipmentChanged.Invoke(null, oldItem);
+				onEquipmentChanged.Invoke(defaultWear[slotIndex], oldItem);
 			
 		}
 
@@ -104,7 +105,7 @@ public class EquipmentManager : MonoBehaviour {
 
 	void EquipAllDefault() {
 		foreach (Equipment e in defaultWear) {
-			Equip (e);
+			e.Use();
 		}
 	}
 }

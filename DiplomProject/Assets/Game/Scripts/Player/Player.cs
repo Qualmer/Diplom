@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Unit
 {
@@ -11,13 +12,16 @@ public class Player : Unit
 	GameObject weaponAttackPrefab;
 	GameObject currentWeaponAttack;
 	Spell attack;
+	public Slider HealthBar;
+	public Slider ManaBar;
 
 	protected void Start()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		EquipmentManager.instance.onEquipmentChanged += Instance_onEquipmentChanged;
-		spriteRenderer.sprite = EquipmentManager.instance.GetEquipment(EquipmentSlot.Weapon).sprite;
-		Weapon = (Weapon)EquipmentManager.instance.GetEquipment(EquipmentSlot.Weapon);
+		Weapon = (Weapon)EquipmentManager.GetEquipment(EquipmentSlot.Weapon);
+		spriteRenderer.sprite = Weapon.NonArmoredSprite;
+		
 		weaponAttackPrefab = Weapon.Attack;
 		currentWeaponAttack = Instantiate(weaponAttackPrefab, transform);
 		attack = currentWeaponAttack.GetComponent<Spell>();
@@ -30,14 +34,17 @@ public class Player : Unit
 			Weapon = (Weapon)newItem;
 			weaponAttackPrefab = Weapon.Attack;
 			currentWeaponAttack = Instantiate(weaponAttackPrefab, transform);
-			spriteRenderer.sprite = newItem.sprite;
 			attack = currentWeaponAttack.GetComponent<Spell>();
 		}
+		spriteRenderer.sprite =
+				EquipmentManager.GetEquipment(EquipmentSlot.Armor) == EquipmentManager.defaultWear[1] ?
+				Weapon.NonArmoredSprite :
+				Weapon.ArmoredSprite;
 	}
 
 	protected void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Mouse0)) {
+		if (Input.GetKey(KeyCode.Mouse1)) {
 			attack.Cast();
 		}
 	}
@@ -55,5 +62,12 @@ public class Player : Unit
 		var mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
 		var dir = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
 		transform.up = dir;
+	}
+
+	protected override void UpdateHealthBar()
+	{
+		base.UpdateHealthBar();
+		HealthBar.value = (float)CurrentHealth / (float)MaxHealth;
+		ManaBar.value = (float)CurrentMana / (float)MaxMana;
 	}
 }

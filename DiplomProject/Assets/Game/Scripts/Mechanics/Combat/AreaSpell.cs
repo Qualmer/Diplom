@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -13,9 +14,7 @@ public class AreaSpell : Spell
 	{
 		if (base.Cast()) {
 			foreach (var target in targets) {
-				if (TargetTags.Contains(target.tag)) {
-					target.GetComponent<Unit>().AddEffects(Effects);
-				}
+				target.GetComponent<Unit>().AddEffects(Effects);
 			}
 			return true;
 		}
@@ -24,11 +23,15 @@ public class AreaSpell : Spell
 
 	protected void OnTriggerEnter2D(Collider2D collision)
 	{
-		targets.Add(collision);
+		if (TargetTags.Contains(collision.tag)) {
+			targets.Add(collision);
+		}
 	}
 
 	protected void OnTriggerExit2D(Collider2D collision)
 	{
-		targets.Remove(collision);
+		if (targets.Contains(collision)) {
+			targets.Remove(collision);
+		}
 	}
 }

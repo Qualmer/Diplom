@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Consumable")]
 
 public class Consumable : Item {
 

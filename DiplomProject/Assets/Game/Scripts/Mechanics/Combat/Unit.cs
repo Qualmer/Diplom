@@ -8,7 +8,18 @@ public class Unit : Shell
 	#region Health
 	public int MaxHealth = 10;
 	[HideInInspector]
-	public int CurrentHealth { get; private set; }
+	public int CurrentHealth {
+		get {
+			return currentHealth;
+		}
+		private set {
+			currentHealth = value;
+			if (currentHealth <= 0) {
+				Die();
+			}
+		}
+	}
+	private int currentHealth;
 	
 	int SetHPPhysical {
 		get {
@@ -40,12 +51,12 @@ public class Unit : Shell
 	public int BasePhysicalArmor;
 	public int BaseMagicalArmor;
 	[HideInInspector]
-	public int CurrentPhysicalArmor;
+	public float CurrentPhysicalArmor;
 	[HideInInspector]
-	public int CurrentMagicalArmor;
+	public float CurrentMagicalArmor;
 	#endregion //Armor
 
-	public List<Spell> Spells;
+	public Spell Spell;
 	protected List<Effect> activeEffects =
 		new List<Effect>();
 
@@ -58,12 +69,13 @@ public class Unit : Shell
 		CurrentMagicalArmor = BaseMagicalArmor;
 	}
 
-	protected int ReduceDamage(int physical, int magical)
+	protected int ReduceDamage(float physical, float magical)
 	{
+		var delta = CurrentPhysicalArmor / 100;
 		physical *= 1 - Mathf.Clamp(CurrentPhysicalArmor, -90, 90) / 100;
 		magical *= 1 - Mathf.Clamp(CurrentMagicalArmor, -90, 90) / 100;
-		Debug.Log($"{gameObject.name} получает {physical} физического и {magical} магического урона в лицо");
-		return physical + magical;
+		Debug.Log($"{gameObject.name} получает {(int)physical} физического и {(int)magical} магического урона в лицо");
+		return (int)(physical + magical);
 	}
 
 	public virtual void AddEffects(List<Effect> effects)
@@ -118,7 +130,7 @@ public class Unit : Shell
 		}
 		while (true) {
 			action.Invoke();
-			yield return effect.Periodicity;
+			yield return new WaitForSeconds(effect.Periodicity);
 			effect.CurrentTicksCount --;
 			if (effect.CurrentTicksCount == 0) {
 				effect.CurrentTicksCount = effect.BaseTicksCount;
@@ -126,5 +138,21 @@ public class Unit : Shell
 				yield break;
 			}
 		}
+	}
+
+	protected override void FixedUpdate()
+	{
+		base.FixedUpdate();
+		UpdateHealthBar();
+	}
+
+	protected virtual void UpdateHealthBar()
+	{
+
+	}
+
+	protected virtual void Die()
+	{
+		Debug.Log($"Покойся с миром {gameObject.name}");
 	}
 }

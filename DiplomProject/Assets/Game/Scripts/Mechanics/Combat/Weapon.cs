@@ -6,4 +6,6 @@ using UnityEngine;
 public class Weapon : Equipment
 {
 	public GameObject Attack;
+	public Sprite ArmoredSprite;
+	public Sprite NonArmoredSprite;
 }

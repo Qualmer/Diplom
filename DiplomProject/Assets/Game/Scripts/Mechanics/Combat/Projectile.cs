@@ -6,10 +6,13 @@ using System;
 public class Projectile : Shell
 {
 	public Action<Collider2D> CollisionHandler;
+	public List<string> TargetTags = new List<string>();
 
 	protected virtual void OnTriggerEnter2D(Collider2D collision)
 	{
-		CollisionHandler.Invoke(collision);
-		Destroy(gameObject);
+		if (TargetTags.Contains(collision.tag) || collision.tag == "Wall") {
+			CollisionHandler.Invoke(collision);
+			Destroy(gameObject);
+		}
 	}
 }

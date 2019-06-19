@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   name: Sword
-  sprite: {fileID: 21300000, guid: 010b843fb397d274c9d64b6467b4de18, type: 3}
-  showInInventory: 0
+  sprite: {fileID: 21300000, guid: 8fbcbce190736ca4b86087f80ed67b88, type: 3}
+  showInInventory: 1
   equipSlot: 0
   Effects: []
   Attack: {fileID: 2270479445247593155, guid: 54fb9070c8bcc944f9d204508ddbf965, type: 3}
+  ArmoredSprite: {fileID: 21300000, guid: 440c6b4cffa231f4c8d97f6649d9eca8, type: 3}
+  NonArmoredSprite: {fileID: 21300000, guid: a6ce2b62965e63949ac8df975d780555, type: 3}
