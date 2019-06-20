@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b93de7afa80d64ea7e8d0841f8a2bc, type: 3}
   m_Name: EmptyEffect
   m_EditorClassIdentifier: 
-  Action: 1
-  TargetField: 0
+  Action: 0
+  TargetField: 6
   ValueDelta: 0
   ValueDeltaDeltaPerTick: 0
   BaseTicksCount: 1

@@ -15,6 +15,7 @@ public class AreaSpell : Spell
 		if (base.Cast()) {
 			foreach (var target in targets) {
 				target.GetComponent<Unit>().AddEffects(Effects);
+
 			}
 			return true;
 		}

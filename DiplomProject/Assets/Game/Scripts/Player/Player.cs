@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : Unit
 {
@@ -62,6 +63,12 @@ public class Player : Unit
 		var mouseWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
 		var dir = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
 		transform.up = dir;
+	}
+
+	protected override void Die()
+	{
+		base.Die();
+		SceneManager.LoadScene("SampleScene");
 	}
 
 	protected override void UpdateHealthBar()

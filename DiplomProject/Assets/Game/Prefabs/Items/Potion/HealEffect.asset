@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Action: 0
   TargetField: 2
-  ValueDelta: 5
+  BaseValueDelta: 5
+  CurrentValueDelta: 5
   ValueDeltaDeltaPerTick: 0
   BaseTicksCount: 10
   CurrentTicksCount: 10
-  Periodicity: 2
+  Periodicity: 1
   PeriodicityDeltaPerTick: 0

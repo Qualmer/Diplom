@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bdef8b4cc984641b61ed3797a2a589, type: 3}
   m_Name: Hands
   m_EditorClassIdentifier: 
-  name: New Item
+  name: Hands
   sprite: {fileID: 0}
   showInInventory: 0
   equipSlot: 0
   Effects:
   - {fileID: 11400000, guid: 857a4a1be2eddeb4c89cc1c29a2b5797, type: 2}
   Attack: {fileID: 9152183585654758400, guid: bec2ade6dc5ea7642ae6c44b5d37f641, type: 3}
-  ArmoredSprite: {fileID: 21300000, guid: 9b3f9598de75386459f691195232cfce, type: 3}
+  ArmoredSprite: {fileID: 21300000, guid: 72ec005ea5444b4478d45b6e971523d5, type: 3}
   NonArmoredSprite: {fileID: 21300000, guid: 9b3f9598de75386459f691195232cfce, type: 3}

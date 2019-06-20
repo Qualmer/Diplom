@@ -49,7 +49,8 @@ public class Effect : ScriptableObject
 
 	public Action Action;
 	public TargetField TargetField;
-	public float ValueDelta;
+	public float BaseValueDelta;
+	public float CurrentValueDelta;
 	public float ValueDeltaDeltaPerTick;
 	public int BaseTicksCount = 1;
 	public int CurrentTicksCount = 1;
@@ -58,7 +59,7 @@ public class Effect : ScriptableObject
 
 	public float Activate(float value)
 	{
-		return ActionsDictionary[Action].Invoke(value, ValueDelta);
+		return ActionsDictionary[Action].Invoke(value, CurrentValueDelta);
 	}
 }
 

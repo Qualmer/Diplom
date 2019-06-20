@@ -17,8 +17,6 @@ public class Enemy : Unit
 	{
 		if (distanceToPlayer > attackRange && distanceToPlayer < agreRange) {
 			rb.MovePosition(rb.position + (Vector2)transform.up * CurrentSpeed * Time.deltaTime);
-		} else {
-			Attack();
 		}
 	}
 
@@ -32,15 +30,17 @@ public class Enemy : Unit
 	{
 		base.UpdateHealthBar();
 		healthBar.SetPositionAndRotation(
-			new Vector3(transform.position.x, transform.position.y + .8f),
+			new Vector3(transform.position.x, transform.position.y + .8f, -1),
 			new Quaternion(0, 0, -transform.rotation.z, 0)
 		);
-		healthBar.localScale = new Vector3(CurrentHealth / 10, .4f, 1);
+		healthBar.localScale = new Vector3(((float)CurrentHealth / (float)MaxHealth) * 10, .4f, 1);
 	}
 
 	protected override void FixedUpdate()
 	{
-		
+		if (distanceToPlayer < attackRange) {
+			Attack();
+		}
 		playerPos = Player.transform.position;
 		distanceToPlayer = Vector2.Distance(transform.position, playerPos);
 		base.FixedUpdate();

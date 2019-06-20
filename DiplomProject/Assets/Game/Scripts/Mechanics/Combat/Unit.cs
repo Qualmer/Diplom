@@ -27,7 +27,7 @@ public class Unit : Shell
 		}
 		set {
 			CurrentHealth -= ReduceDamage(CurrentHealth - value, 0);
-			Debug.Log($"Текущее здоровье: {CurrentHealth}");
+			Debug.Log($"Текущее здоровье {gameObject.name}: {CurrentHealth}");
 		}
 	}
 	int SetHPMagical {
@@ -134,9 +134,11 @@ public class Unit : Shell
 			effect.CurrentTicksCount --;
 			if (effect.CurrentTicksCount == 0) {
 				effect.CurrentTicksCount = effect.BaseTicksCount;
+				effect.CurrentValueDelta = effect.BaseValueDelta;
 				activeEffects.Remove(effect);
 				yield break;
 			}
+			effect.CurrentValueDelta += effect.ValueDeltaDeltaPerTick;
 		}
 	}
 
